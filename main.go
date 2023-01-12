@@ -76,11 +76,11 @@ func main() {
 		}
 
 	}
-	fmt.Println(farmstruct.Numants)
-	fmt.Println(farmstruct.Start)
-	fmt.Println(farmstruct.Roomnames)
-	fmt.Println(farmstruct.Xcoords)
-	fmt.Println(farmstruct.Ycoords)
-	fmt.Println(farmstruct.End)
-	fmt.Println(farmstruct.Links)
+	fmt.Println("Number of ants:", farmstruct.Numants)
+	fmt.Println("Start room:", farmstruct.Start)
+	fmt.Println("Room name:", farmstruct.Roomnames)
+	fmt.Println("X axis:", farmstruct.Xcoords)
+	fmt.Println("Y axis:", farmstruct.Ycoords)
+	fmt.Println("End room:", farmstruct.End)
+	fmt.Println("Links between rooms:", farmstruct.Links)
 }
