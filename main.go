@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"lem-in-project/control"
 	"log"
 	"os"
 	"strconv"
@@ -9,12 +10,13 @@ import (
 )
 
 type Antfarm struct {
+	Numants   int
 	Start     string
 	End       string
-	Roomnames string
-	Xcoords   int
-	Ycoords   int
-	Numants   int
+	Roomnames []string
+	Xcoords   []int
+	Ycoords   []int
+	Links     []string
 }
 
 func main() {
@@ -36,24 +38,41 @@ func main() {
 			}
 
 		case i:
-			split := strings.Split(v, " ")
-			farmstruct.Roomnames = split[0]
-			farmstruct.Xcoords, err = strconv.Atoi(split[1])
-			if err != nil {
-				log.Fatal(err)
-			}
-			farmstruct.Ycoords, err = strconv.Atoi(split[2])
-			if err != nil {
-				log.Fatal(err)
-			}
 
-			if v == "##start" {
-				fmt.Println(len(v))
+			if v == "##start" && len(v) == 7 {
 				farmstruct.Start = v
-			} else if v == "##end" {
+			} else if v == "##end" && len(v) == 5 {
 				farmstruct.End = v
-			}
+			} else {
+				sep := strings.Split(splitfile[i], "")
+				join := strings.Join(sep, "")
+				for _, x := range sep {
+					if x == "-" {
+						farmstruct.Links = append(farmstruct.Links, control.GetLinks(join))
 
+					}
+					if x == " " {
+						rooms := strings.Split(join, " ")
+
+						farmstruct.Roomnames = append(farmstruct.Roomnames, rooms[0])
+
+						x, err := strconv.Atoi(rooms[1])
+						if err != nil {
+							log.Fatal(err)
+						}
+						farmstruct.Xcoords = append(farmstruct.Xcoords, x)
+
+						y, err := strconv.Atoi(rooms[2])
+						if err != nil {
+							log.Fatal(err)
+						}
+						farmstruct.Ycoords = append(farmstruct.Ycoords, y)
+						break
+					}
+
+				}
+
+			}
 		}
 
 	}
@@ -63,5 +82,5 @@ func main() {
 	fmt.Println(farmstruct.Xcoords)
 	fmt.Println(farmstruct.Ycoords)
 	fmt.Println(farmstruct.End)
-	fmt.Println(farmstruct)
+	fmt.Println(farmstruct.Links)
 }
