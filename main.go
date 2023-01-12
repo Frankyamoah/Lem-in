@@ -78,7 +78,7 @@ func main() {
 	}
 	fmt.Println("Number of ants:", farmstruct.Numants)
 	fmt.Println("Start room:", farmstruct.Start)
-	fmt.Println("Room name:", farmstruct.Roomnames)
+	fmt.Println("Room names:", farmstruct.Roomnames)
 	fmt.Println("X axis:", farmstruct.Xcoords)
 	fmt.Println("Y axis:", farmstruct.Ycoords)
 	fmt.Println("End room:", farmstruct.End)
