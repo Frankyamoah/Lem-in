@@ -83,4 +83,13 @@ func main() {
 	fmt.Println("Y axis:", farmstruct.Ycoords)
 	fmt.Println("End room:", farmstruct.End)
 	fmt.Println("Links between rooms:", farmstruct.Links)
+
+test := control.Graph{}
+
+	for i := 0; i < 5; i++ {
+	test.AddVertex(i)
 }
+test.Print()
+test.AddEdge("1","2")
+}
+
