@@ -75,14 +75,15 @@ func(g *Graph) AddEdge(from,to string){
 
 //getVertex returns a pointer to the Vertex with a key integer
 func (g *Graph) getVertex (k string) *Vertex {
+	var finalVertex *Vertex
 	for i, Value := range g.vertices {
 		if Value.key == k {
-			return g.vertices[i]
+			finalVertex = g.vertices[i]
 		}
 	}
-	
+	return finalVertex
 }
-// checks if there is duplicate key in addVertex Function
+// checks if there is duplicate room names in addVertex Function
 func Duplicate(list []*Vertex, k string) bool {
 	for _, value := range list {
 		if k == value.key {

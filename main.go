@@ -86,8 +86,8 @@ func main() {
 
 test := control.Graph{}
 
-	for i := 0; i < 5; i++ {
-	test.AddVertex(i)
+for _, value := range farmstruct.Roomnames {
+	
 }
 test.Print()
 test.AddEdge("1","2")
