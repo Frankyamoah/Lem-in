@@ -45,18 +45,37 @@ func (g *Graph) AddVertex(k string) {
 }
 
 // Add edge (link) to the graph
-func (g *Graph) AddEdge(from, to string) {
-	// get vertex
-	fromVertex := g.getVertex(from)
-	toVertex := g.getVertex(to)
-	// check for errors
-	if fromVertex == nil || toVertex == nil {
-		err := fmt.Errorf(("invalid edge (%v-->%v"), from, to)
-		fmt.Println(err.Error())
-	} else {
-		// add edge
-		fromVertex.adjacent = append(fromVertex.adjacent, toVertex)
+func (g *Graph) AddEdge(from, to []string) {
+
+	var f string
+	var t string
+
+	for i, v := range from {
+		for x, y := range to {
+			if i == x {
+
+				f = v
+				t = y
+
+				// get vertex
+				fromVertex := g.getVertex(f)
+				toVertex := g.getVertex(t)
+				// check for errors
+				if fromVertex == nil || toVertex == nil {
+					err := fmt.Errorf(("invalid edge (%v-->%v"), f, t)
+					fmt.Println(err.Error())
+				} else if Duplicate(fromVertex.adjacent, t) {
+					//err := fmt.Errorf(("existing edge (%v-->%v"), from, to)
+					//	fmt.Println(err.Error())
+				} else {
+
+					fromVertex.adjacent = append(fromVertex.adjacent, toVertex)
+				}
+
+			}
+		}
 	}
+
 }
 
 // getVertex returns a pointer to the Vertex with a key integer
@@ -88,7 +107,9 @@ func (g *Graph) Print() {
 
 		for _, value := range value.adjacent {
 			fmt.Printf("%v", value.key)
+			fmt.Printf(" ")
 		}
 	}
 	fmt.Println()
+
 }

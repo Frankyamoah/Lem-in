@@ -9,17 +9,6 @@ import (
 	"strings"
 )
 
-type Antfarm struct {
-	Numants   int
-	Start     string
-	End       string
-	Roomnames []string
-	Xcoords   []int
-	Ycoords   []int
-	From      []string
-	To        []string
-}
-
 func main() {
 
 	inputfile, err := os.ReadFile(os.Args[1])
@@ -28,7 +17,7 @@ func main() {
 		log.Fatal(err)
 	}
 	splitfile := strings.Split(string(inputfile), "\n")
-	farmstruct := new(Antfarm)
+	farmstruct := new(control.Antfarm)
 
 	for i, v := range splitfile {
 		switch i {
@@ -99,12 +88,7 @@ func main() {
 	}
 	from := farmstruct.From
 	to := farmstruct.To
-	for _, i := range from {
-		for _, v := range to {
 
-			test.AddEdge(i, v)
-
-		}
-	}
+	test.AddEdge(from, to)
 	test.Print()
 }

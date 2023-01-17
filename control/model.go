@@ -2,12 +2,14 @@ package control
 
 // stores the information from input file into sections
 type Antfarm struct {
+	Numants   int
 	Start     string
 	End       string
-	Roomnames string
-	Xcoords   int
-	Ycoords   int
-	Numants   int
+	Roomnames []string
+	Xcoords   []int
+	Ycoords   []int
+	From      []string
+	To        []string
 }
 
 // Graph represets an adjacency list graph
