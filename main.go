@@ -16,7 +16,8 @@ type Antfarm struct {
 	Roomnames []string
 	Xcoords   []int
 	Ycoords   []int
-	Links     []string
+	From      []string
+	To        []string
 }
 
 func main() {
@@ -48,7 +49,11 @@ func main() {
 				join := strings.Join(sep, "")
 				for _, x := range sep {
 					if x == "-" {
-						farmstruct.Links = append(farmstruct.Links, control.GetLinks(join))
+						farmstruct.From = append(farmstruct.From, control.GetFrom(join))
+
+					}
+					if x == "-" {
+						farmstruct.To = append(farmstruct.To, control.GetTo(join))
 
 					}
 					if x == " " {
@@ -82,14 +87,24 @@ func main() {
 	fmt.Println("X axis:", farmstruct.Xcoords)
 	fmt.Println("Y axis:", farmstruct.Ycoords)
 	fmt.Println("End room:", farmstruct.End)
-	fmt.Println("Links between rooms:", farmstruct.Links)
+	fmt.Println("From this room:", farmstruct.From)
+	fmt.Println("To this room:", farmstruct.To)
 
-test := control.Graph{}
+	test := control.Graph{}
 
-for _, value := range farmstruct.Roomnames {
-	
+	for _, v := range farmstruct.Roomnames {
+
+		test.AddVertex(v)
+
+	}
+	from := farmstruct.From
+	to := farmstruct.To
+	for _, i := range from {
+		for _, v := range to {
+
+			test.AddEdge(i, v)
+
+		}
+	}
+	test.Print()
 }
-test.Print()
-test.AddEdge("1","2")
-}
-
