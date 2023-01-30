@@ -2,14 +2,14 @@ package control
 
 // stores the information from input file into sections
 type Antfarm struct {
+	Roomnames []string   // name of room
+	Adjacent  [][]string // list of all connecting
+	Distance  int        // current position from start
+	Previous  *Vertex    // previous room
 	Numants   int
-	Start     string
-	End       string
-	Roomnames []string
-	Xcoords   []int
-	Ycoords   []int
-	From      []string
-	To        []string
+	Occupied  bool
+	Antnames  []int    // which ant is in which room
+	Roomtype  []string // type of room(start,end or middle)
 }
 
 // Graph represets an adjacency list graph

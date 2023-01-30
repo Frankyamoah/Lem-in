@@ -30,37 +30,32 @@ func main() {
 		case i:
 
 			if v == "##start" && len(v) == 7 {
-				farmstruct.Start = v
+				startroom := strings.Split(splitfile[i+1], " ")
+				farmstruct.Roomnames = append(farmstruct.Roomnames, startroom[0])
+				farmstruct.Roomtype = append(farmstruct.Roomtype, "start")
 			} else if v == "##end" && len(v) == 5 {
-				farmstruct.End = v
+				endroom := strings.Split(splitfile[i+1], " ")
+				farmstruct.Roomnames = append(farmstruct.Roomnames, endroom[0])
+				farmstruct.Roomtype = append(farmstruct.Roomtype, "end")
+			} else if v != "##start" && v != "##end" {
+				midroom := strings.Split(splitfile[i], " ")
+				farmstruct.Roomnames = append(farmstruct.Roomnames, midroom[0])
+				farmstruct.Roomtype = append(farmstruct.Roomtype, "middle")
+
 			} else {
 				sep := strings.Split(splitfile[i], "")
 				join := strings.Join(sep, "")
 				for _, x := range sep {
 					if x == "-" {
-						farmstruct.From = append(farmstruct.From, control.GetFrom(join))
+
+						farmstruct.Adjacent = append(farmstruct.Adjacent, sep)
 
 					}
-					if x == "-" {
-						farmstruct.To = append(farmstruct.To, control.GetTo(join))
 
-					}
 					if x == " " {
 						rooms := strings.Split(join, " ")
 
 						farmstruct.Roomnames = append(farmstruct.Roomnames, rooms[0])
-
-						x, err := strconv.Atoi(rooms[1])
-						if err != nil {
-							log.Fatal(err)
-						}
-						farmstruct.Xcoords = append(farmstruct.Xcoords, x)
-
-						y, err := strconv.Atoi(rooms[2])
-						if err != nil {
-							log.Fatal(err)
-						}
-						farmstruct.Ycoords = append(farmstruct.Ycoords, y)
 						break
 					}
 
@@ -71,13 +66,8 @@ func main() {
 
 	}
 	fmt.Println("Number of ants:", farmstruct.Numants)
-	fmt.Println("Start room:", farmstruct.Start)
-	fmt.Println("Room names:", farmstruct.Roomnames)
-	fmt.Println("X axis:", farmstruct.Xcoords)
-	fmt.Println("Y axis:", farmstruct.Ycoords)
-	fmt.Println("End room:", farmstruct.End)
-	fmt.Println("From this room:", farmstruct.From)
-	fmt.Println("To this room:", farmstruct.To)
+	fmt.Println("Start room:", farmstruct.Roomnames)
+	fmt.Println("Room types:", farmstruct.Roomtype)
 
 	test := control.Graph{}
 
@@ -86,8 +76,15 @@ func main() {
 		test.AddVertex(v)
 
 	}
-	from := farmstruct.From
-	to := farmstruct.To
+	var from []string
+	var to []string
+	adj := farmstruct.Adjacent
+	for range adj {
+
+		from = adj[0]
+		to = adj[1]
+	}
+	fmt.Println(adj, "x")
 
 	test.AddEdge(from, to)
 	test.Print()
