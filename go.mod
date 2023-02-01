@@ -1,3 +1,3 @@
-module lem-in-project
+module lemin
 
 go 1.19
