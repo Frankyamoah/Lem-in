@@ -1,4 +1,4 @@
-package main
+package lemin
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 var requiredSteps int
 
 // findCompatiblePaths is a function that takes a 2D array of paths and returns a 2D array of compatible paths.
-func findCompatiblePaths(paths [][]*Room) [][]int {
+func FindCompatiblePaths(paths [][]*Room) [][]int {
 	// Initialize a 2D slice to store the compatible paths.
 	var compatiblePaths [][]int
 	// Loop through each path in the array, and compare it to every subsequent path in the array.
@@ -22,7 +22,7 @@ func findCompatiblePaths(paths [][]*Room) [][]int {
 		roomMap := make(map[int]struct{})
 		// Loop through each room in the current path and add it to the roomMap.
 		for _, room := range path1[1 : len(path1)-1] {
-			roomMap[room.id] = struct{}{}
+			roomMap[room.Id] = struct{}{}
 		}
 		// Loop through each subsequent path and compare it to the current path.
 		for j, path2 := range paths[i+1:] {
@@ -30,7 +30,7 @@ func findCompatiblePaths(paths [][]*Room) [][]int {
 			isCompatible := true
 			// Loop through each room in the current path and check if it appears in the roomMap of the other path.
 			for _, room := range path2[1 : len(path2)-1] {
-				if _, ok := roomMap[room.id]; ok {
+				if _, ok := roomMap[room.Id]; ok {
 					// If a room appears in both paths, the paths are not compatible.
 					isCompatible = false
 					break
@@ -41,7 +41,7 @@ func findCompatiblePaths(paths [][]*Room) [][]int {
 				compatiblePaths[i] = append(compatiblePaths[i], i+1+j)
 				// Loop through each room in the other path and add it to the roomMap.
 				for _, room := range path2[1 : len(path2)-1] {
-					roomMap[room.id] = struct{}{}
+					roomMap[room.Id] = struct{}{}
 				}
 			}
 		}
@@ -51,7 +51,7 @@ func findCompatiblePaths(paths [][]*Room) [][]int {
 }
 
 // pathAssign is a function that takes the 2D array of paths and the compatible paths, along with the number of ants, and assigns a path to each ant.
-func pathAssign(paths [][]*Room, validPaths [][]int, antNbr int) []string {
+func PathAssign(paths [][]*Room, validPaths [][]int, antNbr int) []string {
 	// Initialize variables to keep track of the best assigned path and its maximum step length.
 	var bestAssignedPath []string
 	bestMaxStepLength := math.MaxInt32
@@ -99,7 +99,7 @@ func pathAssign(paths [][]*Room, validPaths [][]int, antNbr int) []string {
 }
 
 // printAntSteps is a function that takes the filtered paths and the assigned paths and prints the steps taken by each ant.
-func printAntSteps(filteredPaths [][]*Room, pathStrings []string) {
+func PrintAntSteps(filteredPaths [][]*Room, pathStrings []string) {
 	// Initialize a 2D slice to store the steps taken by each ant in order.
 	var antSteps [][]string
 	// Calculate the number of turns required to complete the path.
@@ -117,7 +117,7 @@ func printAntSteps(filteredPaths [][]*Room, pathStrings []string) {
 		// Loop through each room in the path and add a step string to the steps slice for each room.
 		for i := 1; i < len(filteredPaths[antPath]); i++ {
 			path := filteredPaths[antPath][i]
-			temp := "L" + antStr + "-" + path.name
+			temp := "L" + antStr + "-" + path.Name
 			steps = append(steps, temp)
 		}
 		// Add the steps slice to the antSteps slice.

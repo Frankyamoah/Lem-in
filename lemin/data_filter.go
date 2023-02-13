@@ -1,4 +1,4 @@
-package main
+package lemin
 
 import (
 	"regexp"
@@ -11,7 +11,7 @@ import (
 // antNbr is an integer representing the number of ants.
 // allRooms is an array of strings representing the names of all rooms, including the start and end rooms.
 // links is an array of strings representing links between rooms.
-func filterData(data []string) (antNbr int, allRooms, links []string) {
+func FilterData(data []string) (antNbr int, allRooms, links []string) {
 	// Convert the first element of data, representing the number of ants, into an integer.
 	antNbr, _ = strconv.Atoi(data[0])
 

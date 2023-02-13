@@ -3,7 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"io/ioutil"
+	"lemin/lemin"
 	"os"
 	"strings"
 )
@@ -23,7 +23,7 @@ func readData() ([]string, error) {
 	}
 
 	path := os.Args[1]
-	file, err := os.Open("examples/" + path)
+	file, err := os.Open(path)
 	if err != nil {
 		return nil, fmt.Errorf("ERROR: Failed to open the file: %v", err)
 	}
@@ -43,19 +43,19 @@ func readData() ([]string, error) {
 }
 
 func printOutput(data []string) {
-	antNbr, allRooms, allLinks := filterData(data)
+	antNbr, allRooms, allLinks := lemin.FilterData(data)
 	if antNbr <= 0 {
 		fmt.Println("ERROR: Invalid number of ants. Must be > 0")
 		return
 	}
 
-	graph := newGraph()
+	graph := lemin.NewGraph()
 
 	//add rooms to the graph
 	roomIDs := make(map[string]int)
 	for id, room := range allRooms {
 		roomIDs[room] = id
-		graph.addRoom(id, room)
+		graph.AddRoom(id, room)
 	}
 
 	//add links to the graph
@@ -63,24 +63,24 @@ func printOutput(data []string) {
 		parts := strings.Split(link, "-")
 		id1 := roomIDs[parts[0]]
 		id2 := roomIDs[parts[1]]
-		graph.addLink(id1, id2)
+		graph.AddLink(id1, id2)
 	}
 
 	//assign start and end points
-	startRoom := graph.rooms[0]
-	endRoom := graph.rooms[len(graph.rooms)-1]
+	startRoom := graph.Rooms[0]
+	endRoom := graph.Rooms[len(graph.Rooms)-1]
 
-	paths := graph.findPaths(startRoom, endRoom)
+	paths := graph.FindPaths(startRoom, endRoom)
 	if len(paths) == 0 {
 		fmt.Println("ERROR: no path found or text file is formatted incorrectly")
 		return
 	}
 
-	validPaths := findCompatiblePaths(paths)
-	bestPath := pathAssign(paths, validPaths, antNbr)
+	validPaths := lemin.FindCompatiblePaths(paths)
+	bestPath := lemin.PathAssign(paths, validPaths, antNbr)
 
 	path := os.Args[1]
-	bytes, err := ioutil.ReadFile("examples/" + path)
+	bytes, err := os.ReadFile(path)
 
 	if err != nil {
 		fmt.Println(err)
@@ -90,5 +90,5 @@ func printOutput(data []string) {
 	content := string(bytes)
 	fmt.Println(content)
 	fmt.Println()
-	printAntSteps(paths, bestPath)
+	lemin.PrintAntSteps(paths, bestPath)
 }
