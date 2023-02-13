@@ -27,17 +27,23 @@ func GetRooms() {
 	var emptyString string
 	var getCoOrd string
 	line := 0
+	// Scans text file then applies conditions to differentiate file to read coordinates 
 	getCoOrds := bufio.NewScanner(data)
 	for getCoOrds.Scan() {
 		line++
 		if line > 1 {
+			//Ignores ##Start and ##End 
 			if strings.Contains(getCoOrds.Text(), "#") {
 				emptyString = ""
+				// Ignores links between rooms	
 			} else if strings.Contains(getCoOrds.Text(), "-") {
 				emptyString = ""
 			} else {
+				// adds rest of scanned file to empty string and seperates by \n
 				emptyString = getCoOrds.Text() + "\n"
+				// adds empty string to getcoordinate variable
 				getCoOrd += emptyString
+				// restarts empty string
 				emptyString = ""
 			}
 		}
@@ -67,6 +73,7 @@ func GetRooms() {
 
 // this links the room to their respective next room(s)
 func LinkRooms() {
+	// reads file
 	data, err1 := os.Open(os.Args[1])
 	if err1 != nil {
 		fmt.Println("ERROR: invalid data format")
@@ -80,22 +87,31 @@ func LinkRooms() {
 	for linksInfo.Scan() {
 		line++
 		if line > 1 {
+			// searches file looking for linked rooms containing -
 			if strings.Contains(linksInfo.Text(), "-") {
+				// places links in empty string then places in links variable
 				emptyString = linksInfo.Text()
 				links = append(links, emptyString)
 			} else {
+				// restarts empty string
 				emptyString = ""
 			}
 		}
 	}
-
+// loops through links
 	for i := range links {
+		// Second Loop through each link to get to and from room
 		for j := range links[i] {
 			if links[i][j] == '-' {
+				// splits to and from room by - 
 				linkString := strings.Split(links[i], "-")
+				// searches list of rooms
 				for k := range roomList {
+					//Second loop through list
 					for o := range roomList {
+						// checks if to and from room are equal to names of rooms
 						if linkString[0] == roomList[k].Name && roomList[o].Name == linkString[1] {
+							//creates link to next room based on the example.txt
 							roomList[k].NextRoom = append(roomList[k].NextRoom, roomList[o])
 						} else if linkString[1] == roomList[k].Name && roomList[o].Name == linkString[0] {
 							roomList[k].NextRoom = append(roomList[k].NextRoom, roomList[o])
@@ -112,7 +128,7 @@ var (
 	Start    *Room
 	lenStart int
 )
-
+// Function to determine the startroom/
 func AssignStart() {
 	data, err1 := os.Open(os.Args[1])
 	if err1 != nil {
@@ -122,7 +138,7 @@ func AssignStart() {
 	}
 	var getStart []string
 	var startLine string
-
+	// gathers information for new 
 	startInfo := bufio.NewScanner(data)
 	for startInfo.Scan() {
 		getStart = append(getStart, startInfo.Text())
