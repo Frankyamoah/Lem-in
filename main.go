@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"lemin/lemin"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -79,9 +80,20 @@ func printOutput(data []string) {
 	validPaths := lemin.FindCompatiblePaths(paths)
 	bestPath := lemin.PathAssign(paths, validPaths, antNbr)
 
-	path := os.Args[1]
-	bytes, err := os.ReadFile(path)
+	// sanitize the input path
+	path := filepath.Clean(os.Args[1])
 
+	// check if the input path is absolute or relative to the current working directory
+	if !filepath.IsAbs(path) {
+		wd, err := os.Getwd()
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		path = filepath.Join(wd, path)
+	}
+
+	bytes, err := os.ReadFile(path)
 	if err != nil {
 		fmt.Println(err)
 		return
