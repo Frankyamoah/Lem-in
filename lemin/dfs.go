@@ -1,21 +1,21 @@
 package lemin
 
 // dfs is a recursive function that implements depth-first search
-func (g *Graph) dfs(start, end *Room, visited []bool, path []*Room, paths *[][]*Room) {
+func (g *Graph) dfs(currentRoom, end *Room, visited []bool, path []*Room, paths *[][]*Room) {
 	// Mark the current room as visited
-	visited[start.Id] = true
+	visited[currentRoom.Id] = true
 
 	// Add the current room to the path
-	path = append(path, start)
+	path = append(path, currentRoom)
 
 	// If the current room is the end room, add the path to the list of all paths
-	if start == end {
+	if currentRoom == end {
 		pathCopy := make([]*Room, len(path))
 		copy(pathCopy, path)
 		*paths = append(*paths, pathCopy)
 	} else {
 		// Recursively search the neighbours of the current room
-		for _, neighbour := range start.Neighbours {
+		for _, neighbour := range currentRoom.Neighbours {
 			if !visited[neighbour.Id] {
 				g.dfs(neighbour, end, visited, path, paths)
 			}
@@ -26,7 +26,7 @@ func (g *Graph) dfs(start, end *Room, visited []bool, path []*Room, paths *[][]*
 	path = path[:len(path)-1]
 
 	// Mark the current room as not visited
-	visited[start.Id] = false
+	visited[currentRoom.Id] = false
 }
 
 // findPaths is a function that finds all paths from a start room to an end room in a graph

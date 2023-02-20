@@ -1,7 +1,6 @@
 package lemin
 
 import (
-	"regexp"
 	"strconv"
 	"strings"
 )
@@ -65,12 +64,34 @@ func FilterData(data []string) (antNbr int, allRooms, links []string) {
 	allRooms = append(startRoom, rooms...)
 	allRooms = append(allRooms, endRoom)
 
-	// Extract links between rooms using a regular expression.
-	regex := regexp.MustCompile(`\b\w+-\w+\b`)
 	for _, line := range data {
-		matches := regex.FindAllString(line, -1)
-		links = append(links, matches...)
+		linkedrooms := extractLinks(line)
+		//links refers to the roomlinks that have now been seperated.
+		//so to rooms and from rooms
+		links = append(links, linkedrooms...)
 	}
 
 	return antNbr, allRooms, links
+}
+
+func extractLinks(s string) []string {
+	// Split the input string into words using the space character as a delimiter.
+	words := strings.Split(s, " ")
+
+	// Create an empty slice to store the links.
+	var links []string
+
+	// Iterate over the slice of words.
+	for _, word := range words {
+
+		// Check if the word contains a hyphen.
+		if strings.Contains(word, "-") {
+
+			// If it does, add the word to the links slice.
+			links = append(links, word)
+		}
+	}
+
+	// Return the slice of links.
+	return links
 }
